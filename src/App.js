@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./styles.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from "react-bootstrap";
+import { useState } from "react";
+
+import Home from "./Home";
+import Location from "./Location";
+import Login from "./User/Login";
+import Register from "./User/Register";
+
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("token") ? true : false
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="d-flex flex-column bg-light" id="wrapper">
+        <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <Container fluid className="pt-2">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/location" element={<Location />} />
+            <Route
+              path="/login"
+              element={<Login setIsLoggedIn={setIsLoggedIn} />}
+            />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Container>
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 
